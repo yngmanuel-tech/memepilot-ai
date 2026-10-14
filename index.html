@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1115">
+<meta name="color-scheme" content="dark">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.jup.ag https://api.dexscreener.com https:; base-uri 'none'; form-action 'none'">
+<title>MemePilot AI</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#0f1115;--p:#171a21;--p2:#1e222b;--b:#2a2f3a;--t:#e6e8ee;--m:#8b93a5;--g:#22c55e;--r:#ef4444;--a:#f59e0b;--bl:#3b82f6;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--t);font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{padding-bottom:calc(70px + env(safe-area-inset-bottom))}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(10px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--b)}
+header h1{font-size:17px;margin:0;flex:1}
+.pill{border-radius:999px;padding:4px 12px;font-weight:700;font-size:12px;color:#0b0d10;background:var(--m)}
+main{padding:12px max(14px,env(safe-area-inset-right)) 12px max(14px,env(safe-area-inset-left));max-width:720px;margin:0 auto}
+.card{background:var(--p);border:1px solid var(--b);border-radius:14px;padding:12px 14px;margin-bottom:10px;min-width:0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.grid .card{margin:0}
+.k{color:var(--m);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.v{font-size:20px;font-weight:650;margin-top:2px;font-variant-numeric:tabular-nums}
+.s{color:var(--m);font-size:12px;margin-top:2px}
+.pos{color:var(--g)}.neg{color:var(--r)}.warn{color:var(--a)}.mut{color:var(--m)}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 12px}
+button,a.btn{font:inherit;color:var(--t);background:var(--p2);border:1px solid var(--b);border-radius:12px;padding:12px 14px;cursor:pointer;text-align:center;text-decoration:none;display:block}
+button:disabled{opacity:.4}
+button:focus-visible,a.btn:focus-visible,input:focus-visible{outline:2px solid var(--bl);outline-offset:2px}
+button.big{font-size:18px;font-weight:800;padding:18px 10px;border:none;border-radius:14px}
+.start{background:var(--g);color:#06210f}.stop{background:var(--r);color:#fff}
+.danger{border-color:var(--r)!important;color:#fca5a5!important}
+.ok{border-color:var(--g)!important;color:#86efac!important}
+button.sm{padding:8px 12px;font-size:13px;border-radius:10px;display:inline-block}
+.alert{border-radius:12px;padding:10px 12px;margin-bottom:10px;font-size:13px}
+.alert.err{background:#3b1d1d;border:1px solid var(--r)}
+.alert.w{background:#3a2c10;border:1px solid var(--a)}
+.alert.i{background:#13233f;border:1px solid var(--bl)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.item{background:var(--p);border:1px solid var(--b);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.item .t{font-weight:650}
+.tag{display:inline-block;font-size:11px;border-radius:6px;padding:2px 7px;background:var(--p2);border:1px solid var(--b);margin-left:6px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#12151b;border-top:1px solid var(--b);display:flex;padding:0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);z-index:6}
+nav button{flex:1;background:none;border:none;border-radius:0;padding:9px 0 8px;font-size:11px;color:var(--m);position:relative}
+nav button .i{display:block;font-size:20px;line-height:1.1}
+nav button.on{color:var(--t)}
+.badge{position:absolute;top:4px;left:56%;background:var(--r);color:#fff;border-radius:999px;font-size:10px;padding:1px 6px}
+.seg{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px}
+.seg button{white-space:nowrap;padding:8px 12px;font-size:13px;border-radius:999px;display:inline-block}
+.seg button.on{background:var(--bl);border-color:var(--bl);color:#fff}
+input,select{font:inherit;color:var(--t);background:var(--p2);border:1px solid var(--b);border-radius:10px;padding:10px 12px;width:100%}
+input[type=checkbox]{width:22px;height:22px;accent-color:var(--g);flex:none}
+label.f{display:block;margin:10px 0 4px;font-size:13px;color:var(--m)}
+.chk{display:flex;gap:10px;align-items:center;margin:10px 0}
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:20;align-items:flex-end;justify-content:center;display:flex}
+.sheet{background:var(--p);border-top-left-radius:18px;border-top-right-radius:18px;width:100%;max-width:720px;max-height:88vh;overflow:auto;padding:16px max(16px,env(safe-area-inset-right)) calc(16px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+.sheet h2{font-size:17px;margin:0 0 10px}
+pre{white-space:pre-wrap;word-break:break-word;font:12px/1.45 ui-monospace,Menlo,monospace;background:var(--p2);border-radius:10px;padding:10px;margin:8px 0}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(80px + env(safe-area-inset-bottom));background:#222833;border:1px solid var(--b);padding:10px 14px;border-radius:12px;z-index:30;max-width:92%;font-size:13px}
+.log{font:12px/1.5 ui-monospace,Menlo,monospace}
+.log div{border-bottom:1px solid var(--b);padding:4px 0}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:12px;word-break:break-all}
+h3{font-size:13px;color:var(--m);margin:16px 0 8px;text-transform:uppercase;letter-spacing:.05em}
+ol{padding-left:18px;margin:6px 0}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><h1>🚀 MemePilot AI</h1><span id="pill" class="pill">FERMO</span></header>
+<main id="main"><div class="card">Caricamento…</div></main>
+<nav id="nav">
+  <button data-v="home" class="on"><span class="i">🏠</span>Home</button>
+  <button data-v="pos"><span class="i">💼</span>Posizioni</button>
+  <button data-v="tok"><span class="i">🔎</span>Token</button>
+  <button data-v="prop"><span class="i">✋</span>Proposte<span id="badge" class="badge" hidden></span></button>
+  <button data-v="more"><span class="i">⚙️</span>Altro</button>
+</nav>
+<div id="sheetbg" class="sheet-bg" hidden><div class="sheet" id="sheet"></div></div>
+<div id="toast" class="toast" hidden></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>
